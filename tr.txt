@@ -1,0 +1,45 @@
+Parcial de Calidad de Software Avanzado
+Tema central: CI/CD con GitHub Actions o nektos/act, linters, cobertura y pruebas automatizadas
+Instrucciones generales:
+- Duración sugerida: 90–120 minutos.
+- Trabajo individual y sin uso de herramientas de inteligencia artificial para generar código.
+- Debe entregar:
+* Enlace al repositorio de GitHub o archivo ZIP.
+* README.md explicando la ejecución del pipeline.
+* Capturas de logs de un run exitoso y uno fallido.
+Contexto:
+Debe crear un proyecto en Java, Python o JavaScript/TypeScript e implementar un pipeline de CI con:
+- Linter obligatorio.
+- Pruebas unitarias.
+- Reporte de cobertura.
+- Compilación/Build.
+- El workflow debe fallar si pruebas o cobertura mínima fallan.
+- Debe poder ejecutarse localmente usando nektos/act.
+Parte 1 – Estrategia:
+1. Explicar la diferencia entre CI y CD.
+2. Indicar lenguaje, linter y herramienta de cobertura a utilizar, con justificación.
+3. Definir y justificar un umbral mínimo de cobertura (70–90%).
+Parte 2 – Workflow CI/CD:
+Debe crear .github/workflows/ci-quality.yml con:
+- Activación en push y pull_request.
+- Pasos: checkout, instalación dependencias, linter, build, pruebas, cobertura y validación de umbral.
+- Si alguna etapa falla, el run debe detenerse.
+Parte 3 – Uso de nektos/act:
+Investigar qué es act y documentar en README.md:
+- Qué hace.
+- Requisitos (Docker).
+- Comando para ejecutar el workflow localmente.
+Parte 4 – Validación y logs:
+En RESPUESTAS.md explicar:
+- Cómo identificar fallos de linter, pruebas y cobertura en logs.
+- Generar un run fallido y uno exitoso y explicar la diferencia.
+Parte 5 – IA y Ética:
+- Investigar dos métodos para detectar código generado por IA.
+- Explicar por qué no es posible asegurar al 100% la autoría.
+- Proponer políticas razonables de uso de IA en educación y calidad.
+Criterios de evaluación:
+- Parte 1: 15%
+- Parte 2: 45%
+- Parte 3: 15%
+- Parte 4: 15%
+- Parte 5: 10%

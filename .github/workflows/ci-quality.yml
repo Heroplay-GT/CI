@@ -43,20 +43,18 @@ jobs:
 
     - name: Build package
       run: |
-        python -m build
-    
+        python -m pip install --upgrade pip setuptools wheel build
+        # Use --no-isolation to avoid issues creating an isolated build env on the runner
+        python -m build --no-isolation
+
     - name: Ejecutar Linter (flake8)
       run: |
         flake8 app.py test_app.py --count --show-source --statistics
-    
-    - name: Ejecutar pruebas unitarias
+
+    - name: Ejecutar pruebas y cobertura
       run: |
-        pytest test_app.py -v
-    
-    - name: Generar reporte de cobertura
-      run: |
-        pytest test_app.py --cov=app --cov-report=term-missing --cov-report=html --cov-fail-under=80
-    
+        pytest test_app.py -v --cov=app --cov-report=term-missing --cov-report=html --cov-fail-under=80
+
     - name: Subir reporte de cobertura
       uses: actions/upload-artifact@v3
       if: always()
