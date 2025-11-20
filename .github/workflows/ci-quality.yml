@@ -44,7 +44,7 @@ jobs:
     
     - name: Subir reporte de cobertura
       uses: actions/upload-artifact@v3
-      if: always()
+      if: always() && github.event_name != 'workflow_dispatch' && env.ACT != 'true'
       with:
         name: coverage-report
         path: htmlcov/
