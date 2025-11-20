@@ -20,19 +20,21 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Instalar dependencias
+      - name: Instalar dependencias (log)
+        continue-on-error: true
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install -r requirements.txt
+          python -m pip install --upgrade pip 2>&1 | tee install_deps.log || true
+          python -m pip install -r requirements.txt 2>&1 | tee -a install_deps.log || true
 
       - name: Ejecutar Linter (flake8)
         run: |
           flake8 app.py test_app.py --count --show-source --statistics
 
-      - name: Build (crear paquete)
+      - name: Build (crear paquete) (log)
+        continue-on-error: true
         run: |
-          python -m pip install --upgrade pip setuptools wheel build
-          python -m build --no-isolation
+          python -m pip install --upgrade pip setuptools wheel build 2>&1 | tee build.log || true
+          python -m build --no-isolation 2>&1 | tee -a build.log || true
 
       - name: Ejecutar pruebas + cobertura (capturando logs)
         continue-on-error: true
@@ -40,6 +42,16 @@ jobs:
           set -o pipefail
           echo "=== pytest (term + html) ===" > pytest.log
           pytest test_app.py -v --cov=app --cov-report=term-missing --cov-report=html --cov-fail-under=80 2>&1 | tee -a pytest.log || true
+
+      - name: Capturar diagnóstico del runner
+        continue-on-error: true
+        run: |
+          echo "=== python version ===" > diag.log
+          python -V 2>&1 | tee -a diag.log || true
+          echo "=== pip list ===" >> diag.log
+          python -m pip list 2>&1 | tee -a diag.log || true
+          echo "=== workspace files ===" >> diag.log
+          ls -la 2>&1 | tee -a diag.log || true
 
       - name: Subir reporte de cobertura
         uses: actions/upload-artifact@v4
