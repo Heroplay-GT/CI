@@ -24,6 +24,23 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
+    - name: Debug: imprimir entorno y probar build (verboso)
+      run: |
+        echo "=== Python version ==="
+        python -V || python3 -V
+        echo "=== pip version ==="
+        pip -V || python -m pip -V
+        echo "=== pip list ==="
+        pip list || python -m pip list
+        echo "=== env / printenv ==="
+        printenv || env
+        echo "=== workspace files ==="
+        ls -la
+        echo "=== Instalando dependencias de build (verbose) ==="
+        python -m pip install --upgrade pip setuptools wheel build -v || true
+        echo "=== Intentando build (verbose) ==="
+        python -m build -v || true
+
     - name: Build package
       run: |
         python -m build
