@@ -40,7 +40,7 @@ jobs:
     
     - name: Generar reporte de cobertura
       run: |
-        pytest test_app.py --cov=app --cov-report=term-missing --cov-report=html --cov-fail-under=80
+        pytest test_app.py --cov=app --cov-report=term-missing --cov-report=html --cov-fail-under=95
     
     - name: Subir reporte de cobertura
       uses: actions/upload-artifact@v3
