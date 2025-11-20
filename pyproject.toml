@@ -1,21 +1,9 @@
 [build-system]
-requires = ["setuptools>=61.0","wheel","build"]
+requires = ["setuptools>=61.0", "wheel", "build"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "ci_calculadora"
-version = "0.1.0"
-description = "Proyecto de ejemplo para parcial de Calidad de Software - CI/CD"
-authors = [ { name = "Heroplay-GT" } ]
-
-[tool.setuptools]
-py_modules = ["app"]
-[build-system]
-requires = ["setuptools>=61.0", "wheel"]
-build-backend = "setuptools.build_meta"
-
-[project]
-name = "ci-calculadora"
 version = "0.1.0"
 description = "Calculadora simple para el parcial de CI"
 authors = [ { name = "Heroplay-GT" } ]
