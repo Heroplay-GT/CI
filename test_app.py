@@ -52,3 +52,11 @@ def test_es_par():
     assert es_par(7) is False
     assert es_par(0) is True
     assert es_par(-2) is True
+
+
+def test_main_prints(capsys):
+    """Llamar a main() para cubrir las líneas de impresión"""
+    from app import main
+    main()
+    captured = capsys.readouterr()
+    assert "Calculadora Simple" in captured.out
