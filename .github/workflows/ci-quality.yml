@@ -3,6 +3,59 @@ name: CI Quality Pipeline
 on:
   push:
     branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+  workflow_dispatch: {}
+
+jobs:
+  quality-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v3
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Ejecutar Linter (flake8)
+        run: |
+          flake8 app.py test_app.py --count --show-source --statistics
+
+      - name: Build (crear paquete)
+        run: |
+          python -m pip install --upgrade pip setuptools wheel build
+          python -m build --no-isolation
+
+      - name: Ejecutar pruebas + cobertura
+        run: |
+          pytest test_app.py -v --cov=app --cov-report=term-missing --cov-report=html --cov-fail-under=80
+
+      - name: Subir reporte de cobertura
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: coverage-report
+          path: htmlcov/
+
+      - name: Subir artefactos de build
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: dist
+          path: dist/
+name: CI Quality Pipeline
+
+on:
+  push:
+    branches: [ main, master, develop ]
   name: CI Quality Pipeline
 
   on:
