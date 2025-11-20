@@ -45,7 +45,8 @@ jobs:
           echo "=== ensure pytest installed ===" > pytest.log
           python -m pip install --quiet pytest pytest-cov || true
           echo "=== pytest (term + html) ===" >> pytest.log
-          python -m pytest test_app.py -v --cov=app --cov-report=term-missing --cov-report=html --cov-fail-under=80 2>&1 | tee -a pytest.log || true
+          # Ejecutar todos los tests del repo para capturar cualquier test nuevo (incluye tests/)
+          python -m pytest -v --cov=app --cov-report=term-missing --cov-report=html --cov-fail-under=80 2>&1 | tee -a pytest.log || true
 
       - name: Capturar diagnóstico del runner
         continue-on-error: true
