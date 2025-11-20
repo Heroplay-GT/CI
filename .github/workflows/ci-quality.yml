@@ -28,6 +28,8 @@ jobs:
 
       - name: Ejecutar Linter (flake8)
         run: |
+          # Asegurarse de que flake8 está instalado en el runner
+          python -m pip install --quiet flake8 || true
           python -m flake8 app.py test_app.py --count --show-source --statistics
 
       - name: Build (crear paquete) (log)
@@ -40,7 +42,9 @@ jobs:
         continue-on-error: true
         run: |
           set -o pipefail
-          echo "=== pytest (term + html) ===" > pytest.log
+          echo "=== ensure pytest installed ===" > pytest.log
+          python -m pip install --quiet pytest pytest-cov || true
+          echo "=== pytest (term + html) ===" >> pytest.log
           python -m pytest test_app.py -v --cov=app --cov-report=term-missing --cov-report=html --cov-fail-under=80 2>&1 | tee -a pytest.log || true
 
       - name: Capturar diagnóstico del runner
