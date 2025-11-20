@@ -38,6 +38,18 @@ jobs:
         run: |
           pytest test_app.py -v --cov=app --cov-report=term-missing --cov-report=html --cov-fail-under=80
 
+      - name: Capturar build y pruebas (logs)
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          echo "=== install build deps ===" > install_build_deps.log
+          python -m pip install --upgrade pip setuptools wheel build 2>&1 | tee -a install_build_deps.log || true
+          echo "=== python -m build ===" > build.log
+          python -m build --no-isolation 2>&1 | tee -a build.log || true
+          echo "=== pytest ===" > pytest.log
+          pytest test_app.py -v --cov=app --cov-report=html --cov-fail-under=80 2>&1 | tee -a pytest.log || true
+          echo "EXIT_CODES: build:$?" >> pytest.log || true
+
       - name: Subir reporte de cobertura
         uses: actions/upload-artifact@v4
         if: always()
@@ -51,3 +63,13 @@ jobs:
         with:
           name: dist
           path: dist/
+
+      - name: Subir logs de build y tests
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ci-logs
+          path: |
+            build.log
+            pytest.log
+            install_build_deps.log
