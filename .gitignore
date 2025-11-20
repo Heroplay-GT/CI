@@ -24,3 +24,10 @@ htmlcov/
 # OS
 .DS_Store
 Thumbs.db
+
+# Ignorar logs locales de CI
+act_local_run*.txt
+act_success*.txt
+logs/
+logs_ci*
+
